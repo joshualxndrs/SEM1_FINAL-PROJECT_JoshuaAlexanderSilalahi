@@ -295,6 +295,8 @@ class Spidey(pygame.sprite.Sprite):
     def draw(self):
         screen.blit(pygame.transform.flip(self.image, self.flip, False), self.rect)
 
+#---------------------------------------------------------------------------------------------------------------------------------------#
+#PROGRAMS - WORLD and ENVIRONMENTS
 
 class World():
     def __init__(self):
@@ -379,6 +381,9 @@ class Exit(pygame.sprite.Sprite):
         self.rect.x += screen_scroll
 
 
+#---------------------------------------------------------------------------------------------------------------------------------------#
+#PROGRAMS - ITEM BOXES and FUNCTIONS
+
 class ItemBox(pygame.sprite.Sprite):
     def __init__(self, item_type, x, y):
         pygame.sprite.Sprite.__init__(self)
@@ -393,7 +398,7 @@ class ItemBox(pygame.sprite.Sprite):
         self.rect.x += screen_scroll
         #check if the player has picked up the box
         if pygame.sprite.collide_rect(self, player):
-            #check what kind of box it was
+            #check the item in the box
             if self.item_type == 'Health':
                 player.health += 25
                 if player.health > player.max_health:
@@ -405,6 +410,8 @@ class ItemBox(pygame.sprite.Sprite):
             #delete the item box
             self.kill()
 
+#---------------------------------------------------------------------------------------------------------------------------------------#
+#PROGRAMS - HEALTH and HEALTH-BAR
 
 class HealthBar():
     def __init__(self, x, y, health, max_health):
@@ -423,6 +430,8 @@ class HealthBar():
         pygame.draw.rect(screen, GREEN, (self.x, self.y, 150 * ratio, 20))
 
 
+#---------------------------------------------------------------------------------------------------------------------------------------#
+#PROGRAMS - SPIDERMAN's WEB and VENOM's SYMBIOTE WEB
 class Web(pygame.sprite.Sprite):
     def __init__(self, x, y, direction):
         pygame.sprite.Sprite.__init__(self)
@@ -442,12 +451,7 @@ class Web(pygame.sprite.Sprite):
         for tile in world.obstacle_list:
             if tile[1].colliderect(self.rect):
                 self.kill()
-
         #check collision with characters
-        if pygame.sprite.spritecollide(player, bullet_group, False):
-            if player.alive:
-                player.health -= 5
-                self.kill()
         for enemy in enemy_group:
             if pygame.sprite.spritecollide(enemy, bullet_group, False):
                 if enemy.alive:
@@ -486,7 +490,8 @@ class VenomWeb(pygame.sprite.Sprite):
                     enemy.health -= 25
                     self.kill()
 
-
+#---------------------------------------------------------------------------------------------------------------------------------------#
+#PROGRAMS - GRENADE and EXPLOSION
 
 class Grenade(pygame.sprite.Sprite):
     def __init__(self, x, y, direction):
@@ -579,6 +584,8 @@ class Explosion(pygame.sprite.Sprite):
             else:
                 self.image = self.images[self.frame_index]
 
+#---------------------------------------------------------------------------------------------------------------------------------------#
+#ANIMATIONS, BUTTONS, SPRITEs GROUPINGS
 
 #create screen fades
 intro_animation = ScreenFade(1, BLACK, 4)
@@ -588,7 +595,7 @@ dead_animation = ScreenFade(2, RED, 4)
 #create buttons
 start_button = button.Button(SCREEN_WIDTH // 2 - 130, SCREEN_HEIGHT // 2 - 150, start_img, 1)
 exit_button = button.Button(SCREEN_WIDTH // 2 - 110, SCREEN_HEIGHT // 2 + 50, exit_img, 1)
-restart_button = button.Button(SCREEN_WIDTH // 2 - 100, SCREEN_HEIGHT // 2 - 50, restart_img, 2)
+restart_button = button.Button(SCREEN_WIDTH // 2 - 110, SCREEN_HEIGHT // 2 - 100, restart_img, 2)
 
 #create sprite groups
 enemy_group = pygame.sprite.Group()
@@ -607,7 +614,7 @@ world_data = []
 for row in range(ROWS):
     r = [-1] * COLS
     world_data.append(r)
-#load in level data and create world
+#load in level data and create world, load levels according to the csv file
 with open(f'level{level}_data.csv', newline='') as csvfile:
     reader = csv.reader(csvfile, delimiter=',')
     for x, row in enumerate(reader):
@@ -616,7 +623,8 @@ with open(f'level{level}_data.csv', newline='') as csvfile:
 world = World()
 player, health_bar = world.process_data(world_data)
 
-
+#---------------------------------------------------------------------------------------------------------------------------------------#
+#RUNNING THE PROGRAM
 
 run = True
 while run:
@@ -625,7 +633,6 @@ while run:
 
     if start_game == False:
         #MENU
-        #screen.fill(BG)
         draw_menu()
         #add buttons
         if start_button.draw(screen):
@@ -633,7 +640,7 @@ while run:
             start_intro = True
         if exit_button.draw(screen):
             run = False
-    else:
+    elif start_game == True:
         #update background
         draw_bg()
         #draw world map
@@ -716,7 +723,16 @@ while run:
                             for y, tile in enumerate(row):
                                 world_data[x][y] = int(tile)
                     world = World()
-                    player, health_bar = world.process_data(world_data) 
+                    player, health_bar = world.process_data(world_data)
+                if level > MAX_LEVELS:
+                    if dead_animation.fade():
+                        if exit_button.draw(screen):
+                         start_game = False
+                         level = 1
+
+
+
+
         else:
             screen_scroll = 0
             if dead_animation.fade():
@@ -733,6 +749,9 @@ while run:
                                 world_data[x][y] = int(tile)
                     world = World()
                     player, health_bar = world.process_data(world_data)
+                if exit_button.draw(screen):
+                    start_game = False
+                    level = 1
 
 
     for event in pygame.event.get():

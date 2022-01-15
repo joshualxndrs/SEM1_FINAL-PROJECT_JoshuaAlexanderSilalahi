@@ -22,7 +22,7 @@ ROWS = 16
 COLS = 150
 TILE_SIZE = SCREEN_HEIGHT // ROWS
 TILE_TYPES = 21
-MAX_LEVELS = 3
+MAX_LEVELS = 2
 screen_scroll = 0
 bg_scroll = 0
 level = 1
@@ -83,7 +83,7 @@ venom_web_img = pygame.image.load('img/icons/venomweb.png')
 grenade_img = pygame.image.load('img/icons/grenade.png').convert_alpha()
 #pick up boxes
 health_box_img = pygame.image.load('img/icons/health_box.png').convert_alpha()
-ammo_box_img = pygame.image.load('img/icons/ammo_box.png').convert_alpha()
+ammo_box_img = pygame.image.load('img/icons/web_fluid.png').convert_alpha()
 grenade_box_img = pygame.image.load('img/icons/grenade_box.png').convert_alpha()
 item_boxes = {
     'Health'    : health_box_img,
