@@ -17,4 +17,4 @@ Google Docs Link: https://docs.google.com/document/d/1rSx9YsNtok5xn879eIwhY1nTJ0
 Total Work-time: 3 Weeks
 <br>
 <br>
-Notes: Pull all the files in order to run the program properly. Assets are grouped into neat folders to provide easy access. Every project description would be found on the google docs or PDF file.
+Notes: Pull all the files in order to run the program properly. Assets are grouped into neat folders to provide easy access. Run the file using the main file which is the SpidermanProgs.py Every project description would be found on the google docs or PDF file.
