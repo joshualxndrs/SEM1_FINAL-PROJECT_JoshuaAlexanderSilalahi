@@ -9,7 +9,7 @@ Course Code: COMP6047001
 Class: L1AC
 <br>
 <br>
-Youtube Link:
+Youtube Link: https://youtu.be/P4nhq8tzjN4
 <br>
 Google Docs Link: https://docs.google.com/document/d/1rSx9YsNtok5xn879eIwhY1nTJ01JlKVoKEdt452tSQA/edit?usp=sharing
 <br>
