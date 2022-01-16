@@ -484,11 +484,6 @@ class VenomWeb(pygame.sprite.Sprite):
             if player.alive:
                 player.health -= 5
                 self.kill()
-        for enemy in enemy_group:
-            if pygame.sprite.spritecollide(enemy, bullet_group, False):
-                if enemy.alive:
-                    enemy.health -= 25
-                    self.kill()
 
 #---------------------------------------------------------------------------------------------------------------------------------------#
 #PROGRAMS - GRENADE and EXPLOSION
